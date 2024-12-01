@@ -13,8 +13,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+model Manager {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String
+  phone     String    @unique
+  password  String
+  students  Student[]
+  createdAt DateTime  @default(now())
+}
+
+model Teacher {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String    @unique
+  password  String
+  students  Student[]
+  createdAt DateTime  @default(now())
+}
+
+model Student {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  teacherId String   @db.ObjectId
+  name      String
+  phone     String
+  level     Int
+  age       Int
   createdAt DateTime @default(now())
+  Teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  Manager   Manager? @relation(fields: [managerId], references: [id])
+  managerId String?  @db.ObjectId
+
+  @@index([teacherId, phone], name: "teacher_phone")
 }
