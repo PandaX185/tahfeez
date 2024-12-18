@@ -36,8 +36,9 @@ model Student {
   teacherId String   @db.ObjectId
   name      String
   phone     String
+  password  String
   level     Int
-  age       Int
+  birthDate DateTime
   createdAt DateTime @default(now())
   Teacher   Teacher  @relation(fields: [teacherId], references: [id])
   Manager   Manager? @relation(fields: [managerId], references: [id])
