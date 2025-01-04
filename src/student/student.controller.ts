@@ -10,6 +10,7 @@ import {
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { StudentLoginDto } from './dto/student-login.dto';
 
 @Controller('student')
 export class StudentController {
@@ -40,5 +41,13 @@ export class StudentController {
     @Body() updateStudentDto: UpdateStudentDto,
   ) {
     return this.studentService.update(teacherId, phone, updateStudentDto);
+  }
+
+  @Post('/login/?teacherId')
+  login(
+    @Query('teacherId') teacherId: string,
+    @Body() loginDto: StudentLoginDto,
+  ) {
+    return this.studentService.login(teacherId, loginDto);
   }
 }
