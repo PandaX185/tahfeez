@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentLoginDto } from './dto/student-login.dto';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('student')
 export class StudentController {
@@ -21,11 +25,15 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('teacher')
   @Get('')
   findAll(@Query('teacherId') teacherId: string) {
     return this.studentService.findAll(teacherId);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('teacher')
   @Get(':phone')
   findOne(
     @Query('teacherId') teacherId: string,
@@ -33,7 +41,7 @@ export class StudentController {
   ) {
     return this.studentService.findOne(teacherId, phone);
   }
-
+  @UseGuards(AuthGuard)
   @Patch(':phone')
   update(
     @Query('teacherId') teacherId: string,
