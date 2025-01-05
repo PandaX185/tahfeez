@@ -21,12 +21,12 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
-  @Get('?teacherId')
+  @Get('')
   findAll(@Query('teacherId') teacherId: string) {
     return this.studentService.findAll(teacherId);
   }
 
-  @Get(':phone/?teacherId')
+  @Get(':phone')
   findOne(
     @Query('teacherId') teacherId: string,
     @Param('phone') phone: string,
@@ -34,7 +34,7 @@ export class StudentController {
     return this.studentService.findOne(teacherId, phone);
   }
 
-  @Patch(':phone/?teacherId')
+  @Patch(':phone')
   update(
     @Query('teacherId') teacherId: string,
     @Param('phone') phone: string,
@@ -43,7 +43,7 @@ export class StudentController {
     return this.studentService.update(teacherId, phone, updateStudentDto);
   }
 
-  @Post('/login/?teacherId')
+  @Post('/login')
   login(
     @Query('teacherId') teacherId: string,
     @Body() loginDto: StudentLoginDto,
