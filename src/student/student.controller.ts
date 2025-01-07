@@ -34,14 +34,14 @@ export class StudentController {
   }
 
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('teacher')
+  @Roles('teacher', 'manager')
   @Get('')
   findAll(@Query('teacherId') teacherId: string) {
     return this.studentService.findAll(teacherId);
   }
 
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('teacher')
+  @Roles('teacher', 'manager')
   @Get(':phone')
   findOne(
     @Query('teacherId') teacherId: string,
@@ -50,6 +50,7 @@ export class StudentController {
     return this.studentService.findOne(teacherId, phone);
   }
   @UseGuards(AuthGuard)
+  @Roles('student')
   @Patch(':phone')
   update(
     @Query('teacherId') teacherId: string,

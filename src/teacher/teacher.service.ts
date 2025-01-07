@@ -27,7 +27,6 @@ export class TeacherService {
         phone: true,
         name: true,
         password: false,
-        students: true,
         createdAt: true,
       },
     });
@@ -40,7 +39,6 @@ export class TeacherService {
         phone: true,
         name: true,
         password: false,
-        students: true,
         createdAt: true,
       },
     });
@@ -54,7 +52,6 @@ export class TeacherService {
         phone: true,
         name: true,
         password: false,
-        students: true,
         createdAt: true,
       },
     });
@@ -84,7 +81,6 @@ export class TeacherService {
         phone: true,
         name: true,
         password: false,
-        students: true,
         createdAt: true,
       },
     });
@@ -103,5 +99,18 @@ export class TeacherService {
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getAuthenticatedUser(req: any) {
+    return await this.prismaService.teacher.findUnique({
+      where: { phone: req.user.phone },
+      select: {
+        id: true,
+        phone: true,
+        name: true,
+        password: false,
+        createdAt: true,
+      },
+    });
   }
 }
