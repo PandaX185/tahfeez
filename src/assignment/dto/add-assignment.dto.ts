@@ -4,6 +4,7 @@ import {
   IsIn,
   IsMongoId,
   IsNotEmpty,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { Surah } from './surah.dto';
@@ -44,14 +45,14 @@ export class AddAssignmentDto {
   surahs: Surah[];
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsIn(['PENDING', 'PASSED', 'REVISION', 'FAILED'], {
     message: 'Invalid status provided',
   })
   @ApiProperty({
     description: 'The status of the assignment',
     type: String,
-    required: true,
+    required: false,
     example: 'FAILED',
     default: 'PENDING',
   })

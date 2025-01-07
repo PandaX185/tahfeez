@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'prisma.service';
 import { AddAssignmentDto } from './dto/add-assignment.dto';
+import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 
 @Injectable()
 export class AssignmentService {
@@ -78,7 +79,11 @@ export class AssignmentService {
     }
   }
 
-  async updateAssignment(req: any, id: string, assignment: AddAssignmentDto) {
+  async updateAssignment(
+    req: any,
+    id: string,
+    assignment: UpdateAssignmentDto,
+  ) {
     const user = await this.getCurrentUser(req);
 
     if (!user) {
