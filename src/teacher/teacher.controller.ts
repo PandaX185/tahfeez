@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   UseGuards,
+  ConflictException,
 } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
@@ -20,7 +21,14 @@ export class TeacherController {
   @UseGuards(AuthGuard)
   @Post()
   create(@Body() createTeacherDto: CreateTeacherDto) {
-    return this.teacherService.create(createTeacherDto);
+    try {
+      const result = this.teacherService.create(createTeacherDto);
+      return result;
+    } catch {
+      throw new ConflictException(
+        'Teacher with this phone number already exists',
+      );
+    }
   }
 
   @UseGuards(AuthGuard)

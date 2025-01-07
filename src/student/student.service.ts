@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'prisma.service';
@@ -19,17 +23,51 @@ export class StudentService {
         ...createStudentDto,
         password: hashSync(createStudentDto.password, 10),
       },
+      select: {
+        id: true,
+        phone: true,
+        name: true,
+        level: true,
+        password: false,
+        birthDate: true,
+        createdAt: true,
+      },
     });
   }
 
   async findAll(teacherId: string) {
-    return await this.prismaService.student.findMany({ where: { teacherId } });
+    return await this.prismaService.student.findMany({
+      where: { teacherId },
+      select: {
+        id: true,
+        phone: true,
+        name: true,
+        level: true,
+        password: false,
+        birthDate: true,
+        createdAt: true,
+      },
+    });
   }
 
   async findOne(teacherId: string, phone: string) {
-    return await this.prismaService.student.findUnique({
+    const result = await this.prismaService.student.findUnique({
       where: { teacherId_phone: { teacherId, phone } },
+      select: {
+        id: true,
+        phone: true,
+        name: true,
+        level: true,
+        password: false,
+        birthDate: true,
+        createdAt: true,
+      },
     });
+    if (!result) {
+      throw new NotFoundException('Student not found');
+    }
+
+    return result;
   }
 
   async update(
@@ -37,9 +75,26 @@ export class StudentService {
     phone: string,
     updateStudentDto: UpdateStudentDto,
   ) {
+    if (updateStudentDto.password) {
+      updateStudentDto.password = hashSync(updateStudentDto.password, 10);
+    }
+    const result = await this.findOne(teacherId, phone);
+    if (!result) {
+      throw new NotFoundException('Student not found');
+    }
+
     return await this.prismaService.student.update({
       where: { teacherId_phone: { teacherId, phone } },
       data: updateStudentDto,
+      select: {
+        id: true,
+        phone: true,
+        name: true,
+        level: true,
+        password: false,
+        birthDate: true,
+        createdAt: true,
+      },
     });
   }
 

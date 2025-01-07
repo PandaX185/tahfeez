@@ -38,7 +38,7 @@ model Student {
   phone     String
   password  String
   level     Int
-  birthDate DateTime
+  birthDate String
   createdAt DateTime @default(now())
   Teacher   Teacher  @relation(fields: [teacherId], references: [id])
   Manager   Manager? @relation(fields: [managerId], references: [id])
