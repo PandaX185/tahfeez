@@ -118,4 +118,24 @@ export class StudentService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async getLoggedInStudent(req: any) {
+    return await this.prismaService.student.findUnique({
+      where: {
+        teacherId_phone: {
+          teacherId: req.user.teacher,
+          phone: req.user.phone,
+        },
+      },
+      select: {
+        id: true,
+        phone: true,
+        name: true,
+        level: true,
+        assignments: true,
+        birthDate: true,
+        createdAt: true,
+      },
+    });
+  }
 }

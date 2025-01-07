@@ -20,8 +20,6 @@ import { Roles } from 'src/auth/roles.decorator';
 export class TeacherController {
   constructor(private readonly teacherService: TeacherService) {}
 
-  @UseGuards(AuthGuard)
-  @Roles('manager', 'teacher')
   @Post()
   create(@Body() createTeacherDto: CreateTeacherDto) {
     try {
@@ -42,8 +40,8 @@ export class TeacherController {
   @UseGuards(AuthGuard)
   @Roles('teacher')
   @Get('current')
-  getAuthenticatedUser(@Request() req: any) {
-    return this.teacherService.getAuthenticatedUser(req);
+  getLoggedInTeacher(@Request() req: any) {
+    return this.teacherService.getLoggedInTeacher(req);
   }
 
   @Get(':phone')
@@ -57,8 +55,9 @@ export class TeacherController {
   update(
     @Param('phone') phone: string,
     @Body() updateTeacherDto: UpdateTeacherDto,
+    @Request() req: any,
   ) {
-    return this.teacherService.update(phone, updateTeacherDto);
+    return this.teacherService.update(req, phone, updateTeacherDto);
   }
 
   @Post('/login')

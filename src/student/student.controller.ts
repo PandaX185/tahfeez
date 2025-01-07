@@ -8,6 +8,7 @@ import {
   Query,
   UseGuards,
   ConflictException,
+  Request,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -38,6 +39,13 @@ export class StudentController {
   @Get('')
   findAll(@Query('teacherId') teacherId: string) {
     return this.studentService.findAll(teacherId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Roles('student')
+  @Get('current')
+  getLoggedInTeacher(@Request() req: any) {
+    return this.studentService.getLoggedInStudent(req);
   }
 
   @UseGuards(AuthGuard, RolesGuard)

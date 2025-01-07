@@ -62,9 +62,17 @@ export class TeacherService {
     return result;
   }
 
-  async update(phone: string, updateTeacherDto: UpdateTeacherDto) {
+  async update(req: any, phone: string, updateTeacherDto: UpdateTeacherDto) {
     if (updateTeacherDto.password) {
       updateTeacherDto.password = hashSync(updateTeacherDto.password, 10);
+    }
+
+    const user = await this.getLoggedInTeacher(req);
+
+    if (user.phone !== phone) {
+      throw new UnauthorizedException(
+        'You are not authorized to update this teacher',
+      );
     }
 
     const result = await this.findOne(phone);
@@ -101,14 +109,13 @@ export class TeacherService {
     };
   }
 
-  async getAuthenticatedUser(req: any) {
+  async getLoggedInTeacher(req: any) {
     return await this.prismaService.teacher.findUnique({
       where: { phone: req.user.phone },
       select: {
         id: true,
         phone: true,
         name: true,
-        password: false,
         createdAt: true,
       },
     });
