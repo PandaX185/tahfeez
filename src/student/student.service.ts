@@ -28,7 +28,7 @@ export class StudentService {
         phone: true,
         name: true,
         level: true,
-        password: false,
+        assignments: true,
         birthDate: true,
         createdAt: true,
       },
@@ -43,7 +43,7 @@ export class StudentService {
         phone: true,
         name: true,
         level: true,
-        password: false,
+        assignments: true,
         birthDate: true,
         createdAt: true,
       },
@@ -58,7 +58,7 @@ export class StudentService {
         phone: true,
         name: true,
         level: true,
-        password: false,
+        assignments: true,
         birthDate: true,
         createdAt: true,
       },
@@ -91,7 +91,7 @@ export class StudentService {
         phone: true,
         name: true,
         level: true,
-        password: false,
+        assignments: true,
         birthDate: true,
         createdAt: true,
       },
@@ -107,7 +107,12 @@ export class StudentService {
       throw new UnauthorizedException('Invalid phone or password');
     }
 
-    const payload = { sub: student.id, phone: student.phone, role: 'student' };
+    const payload = {
+      sub: student.id,
+      phone: student.phone,
+      role: 'student',
+      teacher: student.teacherId,
+    };
 
     return {
       access_token: await this.jwtService.signAsync(payload),

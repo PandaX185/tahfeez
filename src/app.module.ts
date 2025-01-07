@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TeacherModule } from './teacher/teacher.module';
 import { StudentModule } from './student/student.module';
 import { JwtModule } from '@nestjs/jwt';
+import { AssignmentModule } from './assignment/assignment.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '1d' },
       secret: process.env.JWT_SECRET,
     }),
+    AssignmentModule,
   ],
 })
 export class AppModule {}
