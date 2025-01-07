@@ -21,7 +21,7 @@ export class TeacherController {
   constructor(private readonly teacherService: TeacherService) {}
 
   @UseGuards(AuthGuard)
-  @Roles('manager')
+  @Roles('manager', 'teacher')
   @Post()
   create(@Body() createTeacherDto: CreateTeacherDto) {
     try {
@@ -34,8 +34,6 @@ export class TeacherController {
     }
   }
 
-  @UseGuards(AuthGuard)
-  @Roles('manager')
   @Get()
   findAll() {
     return this.teacherService.findAll();
@@ -48,8 +46,6 @@ export class TeacherController {
     return this.teacherService.getAuthenticatedUser(req);
   }
 
-  @UseGuards(AuthGuard)
-  @Roles('manager')
   @Get(':phone')
   findOne(@Param('phone') phone: string) {
     return this.teacherService.findOne(phone);

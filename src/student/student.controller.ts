@@ -50,7 +50,7 @@ export class StudentController {
     return this.studentService.findOne(teacherId, phone);
   }
   @UseGuards(AuthGuard)
-  @Roles('student')
+  @Roles('student', 'manager')
   @Patch(':phone')
   update(
     @Query('teacherId') teacherId: string,
