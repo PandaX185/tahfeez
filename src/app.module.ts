@@ -3,6 +3,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { StudentModule } from './student/student.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AssignmentModule } from './assignment/assignment.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AssignmentModule } from './assignment/assignment.module';
       secret: process.env.JWT_SECRET,
     }),
     AssignmentModule,
+    NoteModule,
   ],
 })
 export class AppModule {}

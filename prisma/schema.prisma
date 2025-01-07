@@ -67,12 +67,14 @@ model Assignment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Student   Student? @relation(fields: [studentId], references: [id])
+  Note      Note?
 }
 
 model Note {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  assignmentId String   @unique @db.ObjectId
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  assignmentId String      @unique @db.ObjectId
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   content      String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
