@@ -8,6 +8,7 @@ import {
   UseGuards,
   ConflictException,
   Request,
+  Query,
 } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
@@ -15,6 +16,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { TeacherLoginDto } from './dto/teacher-login.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('teacher')
 export class TeacherController {
@@ -33,8 +35,14 @@ export class TeacherController {
   }
 
   @Get()
-  findAll() {
-    return this.teacherService.findAll();
+  @ApiQuery({
+    name: 'studentPhone',
+    required: false,
+    type: String,
+    description: 'Filter teachers by student phone number'
+  })
+  findAll(@Query('studentPhone') studentPhone?: string) {
+    return this.teacherService.findAll(studentPhone);
   }
 
   @UseGuards(AuthGuard)

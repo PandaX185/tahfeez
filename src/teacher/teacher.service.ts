@@ -8,6 +8,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PrismaService } from '../../prisma.service';
 import { hashSync, compareSync } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { stringify } from 'querystring';
 
 @Injectable()
 export class TeacherService {
@@ -32,7 +33,7 @@ export class TeacherService {
     });
   }
 
-  async findAll() {
+  async findAll(studentPhone: string) {
     return await this.prismaService.teacher.findMany({
       select: {
         id: true,
@@ -40,6 +41,13 @@ export class TeacherService {
         name: true,
         password: false,
         createdAt: true,
+      },
+      where: {
+        students: {
+          some: {
+            phone: studentPhone,
+          },
+        },
       },
     });
   }
